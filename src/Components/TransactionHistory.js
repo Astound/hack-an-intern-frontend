@@ -7,6 +7,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Navbar from "./Navbar";
+import { Box } from "@mui/material";
 
 function createData(b_user,s_user, qty, price ) {
   return { b_user, s_user , qty, price };
@@ -23,7 +24,8 @@ const rows = [
 const TransactionHistory = () => {
   return (
     <>
-    <Navbar/>
+    <Navbar title = {"Transaction History"}/>
+      <Box sx={{display : 'flex' , justifyContent : 'center'}}>
       <TableContainer sx={{ maxWidth: 650 }}  component={Paper}>
         <Table sx={{ maxWidth: 650 }} aria-label="simple table">
           <TableHead>
@@ -51,6 +53,7 @@ const TransactionHistory = () => {
           </TableBody>
         </Table>
       </TableContainer>  
+      </Box>
     </>
   );
 };

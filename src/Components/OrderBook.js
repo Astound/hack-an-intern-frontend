@@ -2,6 +2,7 @@ import * as React from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, Typography }from "@mui/material"; 
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Navbar from "./Navbar";
 
 function createData(user,   qty, price, status) {
   return { user,   qty, price, status };
@@ -50,11 +51,11 @@ const OrderBook = () => {
  
   return (
     <> 
+      <Navbar title= {"Order Book"}/>
         <Grid
           sx={{
           height: "100vh", 
           width: "100%",
-          background:"blue" ,
         }}
           container
           display="flex"
