@@ -2,32 +2,46 @@ import React from "react";
 import { Box, Button, Grid } from "@mui/material";
 import LineGraph from "../Components/LineGraph";
 import UserPorfolio from "../Components/UserPortfolio";
+import MarketPriceDisplay from "../Components/MarketPriceDisplay";
 import { Link } from "react-router-dom";
+
 const Home = () => {
-  const styleButton = {
-    width: 400,
+  const styleButton = { 
+    width: 400, 
     fontSize: "14px",
-    bgcolor: "#000",
-    color: "#fff",
-    border: "none",
-    boxShadow: 5,
+    bgcolor: "orange",
+    color: "#000",
+    border: "3px solid orange",
     p: 1,
-    m : '1rem',
+    m: "5px",
+    borderRadius: 0,
     "&:hover": {
-          backgroundColor: "red",
-          opacity: [0.9, 0.8, 0.7],
-        },
+      bgcolor: "#fff",
+      color: "#000",
+      border: "3px solid #000",
+      opacity: [0.9, 0.8, 0.7],
+    },
   };
 
   return (
-    <Box>
-      <Box sx={{ display: "flex", justifyContent: "center" }}>
+    <Box sx={{backgroundColor: "#000", padding: "7px", }}>
+      <Box sx={{ display: "flex", justifyContent: "center"  }}>
+        <UserPorfolio />
         <LineGraph />
       </Box>
 
-      <Box sx={{ display: "flex", justifyContent: "center" }}>
-        <UserPorfolio />
-        <Box sx={{ m : '1rem', display: "flex", justifyContent: "center" ,flexDirection: 'column' }}>
+      <Box sx={{ display: "flex", justifyContent: "flex-start" ,alignItems: "center"  }}>
+        <MarketPriceDisplay/>
+        <Box 
+          sx={{ 
+            m: "1rem",
+            display: "flex",
+            width: "400px", height: "150px",
+            justifyContent: "center",
+            flexDirection: "column",
+            alignItems:"center"
+          }}
+        >
           <Link style={{ textDecoration: "none" }} to="/transaction-history">
             <Button sx={styleButton}>Transaction History</Button>
           </Link>
@@ -39,8 +53,6 @@ const Home = () => {
           </Link>
         </Box>
       </Box>
-
-
     </Box>
   );
 };

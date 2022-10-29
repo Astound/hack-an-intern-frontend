@@ -1,5 +1,5 @@
  
-import { Button, TableCell, TableRow, TableBody } from "@mui/material";
+import { Button, TableCell, TableRow, TableBody, Typography } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
 
@@ -65,10 +65,10 @@ function UserEdit(props) {
         <>
           <TableBody>
             <TableCell component="th" scope="row">
-              {props.row.user}
+            <Typography color="white">{props.row.user}</Typography> 
             </TableCell>
-            <TableCell align="right">{props.row.stocks}</TableCell>
-            <TableCell align="right">{props.row.fiat}</TableCell>
+            <TableCell align="right"> <Typography color="white">{props.row.stocks}</Typography> </TableCell>
+            <TableCell align="right"> <Typography color="white">{props.row.fiat}</Typography> </TableCell>
             <TableCell align="right">
               <Button onClick={() => setEdit(!edit)}>Edit</Button>
             </TableCell>

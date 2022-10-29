@@ -45,7 +45,11 @@ const LineGraph = () => {
   return (
     <Box
       sx={{
-        width: 0.75,
+        width: 0.7,
+        margin : "20px" ,
+        border: "3px solid white",
+        padding: "10px",
+
       }}
     >
       <Line data={data}>

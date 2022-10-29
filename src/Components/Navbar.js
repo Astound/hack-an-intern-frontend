@@ -20,20 +20,19 @@ const Navbar = (props) => {
             size="large"
             edge="start"
             color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
+            aria-label="menu" 
             onClick={redirect}
           >
             <KeyboardDoubleArrowLeftIcon />
           </IconButton>
-          <Typography>{props.title}</Typography>
-          <Button sx={{float : 'right'}}  >
+          <Typography variant="h6" sx={{textTransform: "uppercase"}}>{props.title}</Typography>
+          <Button sx={{ mx: 3}}  >
             <Link style={{ textDecoration: 'none' ,color : 'white' }} to="/order-book"> Order Book</Link>
           </Button>
-          <Button sx={{}}>
+          <Button sx={{ mx: 3}}>
             <Link style={{ textDecoration: 'none' ,color : 'white' }} to="/transaction-history"> Transaction History</Link>
           </Button>
-          <Button sx={{}}  >
+          <Button sx={{ mx: 3}}  >
             <Link style={{ textDecoration: 'none' ,color : 'white' }}  to="/place-order"> Place Order</Link>
           </Button>
         </Toolbar>

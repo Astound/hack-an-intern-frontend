@@ -1,15 +1,8 @@
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import Button from "@mui/material/Button";
+ 
+import  { Table, Typography , TableCell, TableContainer, TableHead, TableRow, Box,  Paper} from "@mui/material"; 
 import { useEffect, useState } from "react";
 import axios from "axios";
 import UserEdit from "./shared/UserEdit";
- 
 
 function createData(user, userId, stocks, fiat) {
   return { user, userId, stocks, fiat };
@@ -51,23 +44,22 @@ const UserPorfolio = () => {
     getUsers();
   }, []);
   return (
-    <>
-      <TableContainer sx={{ maxWidth: 450 }} component={Paper}>
-        <Table sx={{ maxWidth: 450 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>User</TableCell>
-              <TableCell align="right">Stocks</TableCell>
-              <TableCell align="right">Fiat</TableCell>
-              <TableCell align="right"> </TableCell>
-            </TableRow>
-          </TableHead> 
-          
+    <> 
+        <TableContainer sx={{ maxWidth: 450, margin:"20px", border: "3px solid white", backgroundColor: "#000"  }} component={Box}>
+          <Table sx={{ maxWidth: 450 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell><Typography color="white">User</Typography></TableCell>
+                <TableCell align="right"><Typography color="white">Stocks</Typography></TableCell>
+                <TableCell align="right"><Typography color="white">Fiat</Typography></TableCell>
+                <TableCell align="right"> </TableCell>
+              </TableRow>
+            </TableHead>
+
             {rows &&
               rows.map((row) => <UserEdit row={row} getUsers={getUsers} />)}
-          
-        </Table>
-      </TableContainer>
+          </Table>
+        </TableContainer> 
     </>
   );
 };
