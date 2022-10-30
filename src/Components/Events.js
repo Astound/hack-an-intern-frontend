@@ -43,7 +43,7 @@ function Events() {
     </Card>
   ));
   return (
-    <Box sx={{ background: "black",   padding: "7px" }}>
+    <Box sx={{ background: "black",   padding: "7px" ,minHeight: "100vh" }}>
       <Navbar title="Events Log"/>
       <Box sx={{display:"flex", flexDirection: "column-reverse", }}>{events}</Box>
     </Box>

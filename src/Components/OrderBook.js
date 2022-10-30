@@ -16,6 +16,7 @@ import axios from "axios";
 import Navbar from "./Navbar";
 import LineGraph from "./LineGraph";
 import MarketPriceDisplay from "./MarketPriceDisplay";
+import CryptoCurrencyDisplay from "./CryptoCurrencyDisplay";
 
 function createData(orderId,userId,userName, quantity, price, status) {
   return { orderId,userId,userName, quantity, price, status };
@@ -195,7 +196,10 @@ const OrderBook = () => {
         </TableContainer>
         <LineGraph />
       </Box>
-      <MarketPriceDisplay />
+      <Box sx={{display : "flex", justifyContent: 'space-between'}}>
+        <MarketPriceDisplay />
+        <CryptoCurrencyDisplay/>
+      </Box>
     </Box>
   );
 };

@@ -26,7 +26,7 @@ function App() {
         <Route path="/transaction-history" element={<TransactionHistory/>} />
         <Route path="/order-book" element={<OrderBook/>} />
         <Route path="/place-order" element={<PlaceOrder/>} /> 
-        <Route path="/notification" element={<Notification/>}/>
+        {/* <Route path="/notification" element={<Notification/>}/> */}
         <Route path="/events" element={<Events/>}/>
         <Route path="/binance" element={<Binance/>}/>
       </Routes>

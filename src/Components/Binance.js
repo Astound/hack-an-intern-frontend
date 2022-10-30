@@ -4,6 +4,31 @@ import React, { useEffect, useState } from 'react'
 import { Line } from 'react-chartjs-2';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 import Navbar from './Navbar';
+import {
+    Chart as ChartJS,
+    Title,
+    Tooltip,
+    LineElement,
+    Legend,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    Filler,
+  } from "chart.js";
+  import axios from "axios";
+  
+  ChartJS.register(
+    Title,
+    Tooltip,
+    LineElement,
+    Legend,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    Filler
+  );
+
+
 function Binance() {
     const [socketUrl, setSocketUrl] = useState("wss://stream.binance.com:9443/ws/btcusdt@aggTrade");
     const [messageHistory, setMessageHistory] = useState([]);
@@ -44,7 +69,7 @@ function Binance() {
                 quantity : JSON.parse(lastMessage.data).q
             }));
             setTenTimes((prev) => prev.concat(''));
-            setPrice(JSON.parse(lastMessage.data).p);
+            setPrice(parseFloat(JSON.parse(lastMessage.data).p).toFixed(2));
             // console.log(lastMessage);
         //     let temp = JSON.parse(lastMessage.data);
         //   //   console.log(lastMessage.data);
@@ -63,12 +88,14 @@ function Binance() {
               {
                 label: "Binance",
                 data: tenPoints,
-                backgroundColor: "yellow",
-                borderColor: "green",
+                borderColor: "rgb(191, 64, 191)",
                 pointStyle: "rect",
                 pointBorderColor: "blue",
                 pointBackgroundColor: "#fff",
                 showLine: true,
+                tension: 0.4, 
+                fill: true, 
+                backgroundColor:   "rgb(191, 64, 191,0.3)",
               },
             ],
           })
@@ -80,12 +107,14 @@ function Binance() {
           {
             label: "Density stock price",
             data: [],
-            backgroundColor: "yellow",
-            borderColor: "green",
+            borderColor: "blue",
             pointStyle: "rect",
             pointBorderColor: "blue",
             pointBackgroundColor: "#fff",
             showLine: true,
+            tension: 0.4, 
+            fill: true, 
+            backgroundColor: "rgb(137, 207, 240)",
           },
         ],
       });
@@ -98,7 +127,7 @@ function Binance() {
         sx={{
             padding: "10px",
             display : 'flex',
-
+            justifyContent : 'center'
           }}
         >
 
@@ -106,7 +135,7 @@ function Binance() {
       <Box
       sx={{
         width: 0.5,
-        marginX: "20px",
+        // marginX: "20px",
         marginBottom: "50px",
         border: "3px solid white",
         padding: "10px",
@@ -120,7 +149,7 @@ function Binance() {
     <TableContainer
             sx={{
               maxWidth: 650, 
-              maxHeight: 350, 
+              maxHeight: 388, 
               border: "3px solid white",
               backgroundColor: "#000",
             }}

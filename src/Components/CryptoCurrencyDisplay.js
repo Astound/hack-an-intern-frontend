@@ -16,7 +16,7 @@ const CryptoCurrencyDisplay = () => {
                // console.log(lastMessage);
         let temp = JSON.parse(lastMessage.data);
     //   //   console.log(lastMessage.data);
-            setPrice(temp.p);
+            setPrice(parseFloat(temp.p).toFixed(2));
     //         setTenTimes(...tenTimes,"");
     }
   }, [lastMessage]);
@@ -24,7 +24,7 @@ const CryptoCurrencyDisplay = () => {
     <>
       <Box>
         <Link to="/binance">
-         <span style={{background: "white", color: "black ", padding: "7px"}}> Live Cryptocurrency data </span>
+         <span style={{background: "white", color: "black ", padding: "7px" , marginLeft: "300px"}}> Live Cryptocurrency data </span>
         </Link>
 
         <Box

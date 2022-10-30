@@ -11,6 +11,7 @@ import MarketPriceDisplay from "./MarketPriceDisplay";
 import LineGraph from "./LineGraph";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import CryptoCurrencyDisplay from "./CryptoCurrencyDisplay";
 
 function createData(b_user, s_user, quantity, price) {
   return { b_user, s_user, quantity, price };
@@ -147,7 +148,11 @@ const TransactionHistory = () => {
         </Box>
         <LineGraph />
       </Box>
-      <MarketPriceDisplay />
+      
+      <Box sx={{display : "flex", marginTop:"60px", justifyContent: 'space-between'}}>
+        <MarketPriceDisplay />
+        <CryptoCurrencyDisplay/>
+      </Box>
     </Box>
   );
 };

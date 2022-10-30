@@ -10,8 +10,10 @@ import Select from "react-select";
 import { useEffect, useState } from "react";
 import { Box, Input } from "@mui/material";
 import Navbar from "./Navbar";
+import Notification from "./Notification";
 import MarketPriceDisplay from "./MarketPriceDisplay";
 import LineGraph from "./LineGraph";
+import EventPop from "./EventPop";
 
 const PlaceOrder = () => {
   let navigate = useNavigate();
@@ -26,8 +28,12 @@ const PlaceOrder = () => {
   const [quantity, setquantity] = useState();
   const [userOptions, setUserOptions] = useState([]);
   const [currentPrice, setCurrentPrice] = useState('');
+  const [modal, setModal] = useState(false);
   const [buttonColor, setButtonColor] =useState('#0047AB');
   const [orderId, setOrderId] = useState();
+  const handleOpen =()=>{
+    setModal(!modal);
+  }
   const orderOptions = [
     { value: "BUY", label: "BUY" },
     { value: "SELL", label: "SELL" },
@@ -130,6 +136,23 @@ const PlaceOrder = () => {
     }
   };
   const placeOrder = () => {
+    if(price === undefined){
+      alert("Please enter valid price");
+      return;
+    }
+    if(quantity === undefined){
+      alert("Please enter valid quantity");
+      return;
+    }
+    if(orderType === ""){
+      alert("Please select valid order type");
+      return;
+    }
+    if(priceType === ""){
+      alert("Please select valid price type");
+      return;
+    }
+    
     const orderObj = {
       userId: user.value,
       userName : user.label,
@@ -146,6 +169,7 @@ const PlaceOrder = () => {
         })
         .then((response) => {
           // console.log(response);
+          setModal(true);
           setOrderId(response.data.orderId);
           // redirect();
         })
@@ -183,6 +207,7 @@ const PlaceOrder = () => {
   },[orderType.value])
   return (
     <Box sx={{ backgroundColor: "#000", padding: "7px", height: '100vh' }}>
+      <EventPop open = {modal} message = "Order placed" handleOpen={handleOpen}/>
       <Navbar title="Place order" />
       <Box display="flex" justifyContent="center" alignItems="center">
         <Box
