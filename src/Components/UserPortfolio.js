@@ -13,8 +13,6 @@ const UserPorfolio = () => {
   const headers = {
     accept: "application/json",
     "Content-Type": "application/json",
-
-    Authorization: localStorage.getItem("token"),
   };
   const getUsers = () => {
     try {
@@ -29,7 +27,7 @@ const UserPorfolio = () => {
               createData(user.userName, user.userId, user.stockCount, user.fiat)
             );
           });
-          console.log(tempRow);
+          console.log(response.data);
           setRows(tempRow);
         })
         .catch((e) => {
@@ -45,8 +43,9 @@ const UserPorfolio = () => {
   }, []);
   return (
     <> 
-        <TableContainer sx={{ maxWidth: 450, margin:"20px", border: "3px solid white", backgroundColor: "#000"  }} component={Box}>
-          <Table sx={{ maxWidth: 450 }} aria-label="simple table">
+        <TableContainer sx={{ maxWidth: 650, border: "3px solid white", backgroundColor: "#000"  }} component={Box}>
+
+          <Table sx={{ maxWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
                 <TableCell><Typography color="white">User</Typography></TableCell>

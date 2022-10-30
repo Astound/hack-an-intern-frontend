@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { Line } from "react-chartjs-2";
-import { Box  } from "@mui/material";
+import { Box } from "@mui/material";
 import {
   Chart as ChartJS,
   Title,
@@ -13,6 +13,7 @@ import {
   PointElement,
   Filler,
 } from "chart.js";
+import axios from "axios";
 
 ChartJS.register(
   Title,
@@ -26,12 +27,14 @@ ChartJS.register(
 );
 
 const LineGraph = () => {
+  const [priceHistory ,setPriceHistory]= useState([]);
   const [data, setData] = useState({
     labels: ["", "", "", "", "", "", "", "", "", "", "", ""],
     datasets: [
       {
-        label: "Last 10 points",
-        data: [10, 20, 30, 42, 51, 82, 31, 59, 61, 73, 91, 58],
+        label: "Density stock price",
+        // data: [10, 20, 30, 42, 51, 82, 31, 59, 61, 73, 91, 58],
+        data : priceHistory,
         backgroundColor: "yellow",
         borderColor: "green",
         pointStyle: "rect",
@@ -41,20 +44,59 @@ const LineGraph = () => {
       },
     ],
   });
+  const headers = {
+    accept: "application/json",
+    "Content-Type": "application/json",
+  };
+  const getPriceHistory =()=>{
+    try {
+      axios
+        .get("http://localhost:5000/transactions/price-history", {
+          headers: headers,
+        })
+        .then((response) => {
+          console.log(response);
+          let labels=[];
+          response.data.priceHistory.forEach(()=>labels.push(""))
+          setData({
+            labels: labels,
+            datasets: [
+              {
+                label: "Density stock price",
+                // data: [10, 20, 30, 42, 51, 82, 31, 59, 61, 73, 91, 58],
+                data : response.data.priceHistory,
+                backgroundColor: "yellow",
+                borderColor: "blue",
+                pointStyle: "rect",
+                pointBorderColor: "blue",
+                pointBackgroundColor: "#fff",
+                showLine: true,
+              },
+            ],
+          })
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  useEffect(()=>{
+    getPriceHistory();
+  },[])
 
   return (
     <Box
       sx={{
-        width: 0.7,
-        margin : "20px" ,
+        width: 0.5,
+        marginX: "20px",
         border: "3px solid white",
         padding: "10px",
-
       }}
     >
-      <Line data={data}>
-        Hello
-      </Line>
+      <Line data={data}/>
     </Box>
   );
 };

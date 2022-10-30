@@ -44,7 +44,7 @@ function UserEdit(props) {
             sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
           >
             <TableCell component="th" scope="row">
-              {props.row.user}
+              <Typography color="white">{props.row.user}</Typography> 
             </TableCell>
             <TableCell align="right">
               <input

@@ -1,4 +1,3 @@
-import * as React from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -10,22 +9,71 @@ import Navbar from "./Navbar";
 import { Box, Typography } from "@mui/material";
 import MarketPriceDisplay from "./MarketPriceDisplay";
 import LineGraph from "./LineGraph";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-function createData(b_user, s_user, qty, price) {
-  return { b_user, s_user, qty, price };
+function createData(b_user, s_user, quantity, price) {
+  return { b_user, s_user, quantity, price };
 }
 
-const rows = [
-  createData("A", "B", 6, 24),
-  createData("B", "E", 6, 24),
-  createData("C", "A", 3, 24),
-  createData("D", "B", 2, 24),
-  createData("E", "A", 6, 14),
-];
-
 const TransactionHistory = () => {
+  const [rows,setRows]=  useState([]);
+  const userHash = new Map();
+  const headers = {
+    accept: "application/json",
+    "Content-Type": "application/json",
+  };
+
+    const getUsers=()=>{
+      try {
+        axios
+          .get("http://localhost:5000/user/get-all", {
+            headers: headers,
+          })
+          .then((response) => {
+            console.log(response);
+            response.data.users.forEach((user)=>{
+              userHash.set(user.userId,user.userName);
+            })
+            console.log(userHash.get('a'));
+            getTransactions();
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    const getTransactions = () => {
+      try {
+        axios
+          .get("http://localhost:5000/transactions/get", {
+            headers: headers,
+          })
+          .then((response) => {
+            let tempTrans= [];
+            console.log(response);
+            response.data.transactions.forEach((trans)=>{
+              tempTrans.push(createData(userHash.get(trans.buyer),userHash.get(trans.seller),trans.quantity,trans.price));
+            })
+            setRows(tempTrans);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+  
+  useEffect(()=>{
+    getUsers();
+  },[]);
   return (
-    <Box sx={{ backgroundColor: "#000", padding: "7px" }}>
+    <Box sx={{ backgroundColor: "#000", padding: "7px", height: '100vh' }}>
       <Navbar title={"Transaction History"} />
       <Box display="flex" justifyContent="center" alignItems="center">
         <Box
@@ -40,11 +88,13 @@ const TransactionHistory = () => {
           <TableContainer
             sx={{
               maxWidth: 650, 
+              maxHeight: 350, 
               border: "3px solid white",
               backgroundColor: "#000",
             }}
             component={Box}
           >
+            <Typography  variant="h5" color="white" backgroundColor="#0047AB" margin={'6px'} textAlign="center">Transaction History</Typography>
             <Table sx={{ maxWidth: 650 }} aria-label="simple table">
               <TableHead>
                 <TableRow>
@@ -55,7 +105,7 @@ const TransactionHistory = () => {
                     <Typography style={{ color: "white" }}>Seller</Typography>
                   </TableCell>
                   <TableCell align="right">
-                    <Typography style={{ color: "white" }}>Qty.</Typography>
+                    <Typography style={{ color: "white" }}>quantity.</Typography>
                   </TableCell>
                   <TableCell align="right">
                     <Typography style={{ color: "white" }}>Price</Typography>
@@ -81,7 +131,7 @@ const TransactionHistory = () => {
                     </TableCell>
                     <TableCell align="right">
                       <Typography style={{ color: "white" }}>
-                        {row.qty}
+                        {row.quantity}
                       </Typography>
                     </TableCell>
                     <TableCell align="right">

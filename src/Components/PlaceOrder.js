@@ -14,13 +14,20 @@ import MarketPriceDisplay from "./MarketPriceDisplay";
 import LineGraph from "./LineGraph";
 
 const PlaceOrder = () => {
+  let navigate = useNavigate();
+  const redirect = () => {
+    let url = "/order-book";
+    navigate(url, { replace: true });
+  };
   const [orderType, setOrderType] = useState("");
   const [priceType, setPriceType] = useState("");
   const [user, setUser] = useState("");
   const [price, setPrice] = useState();
-  const [qty, setQty] = useState();
+  const [quantity, setquantity] = useState();
   const [userOptions, setUserOptions] = useState([]);
-
+  const [currentPrice, setCurrentPrice] = useState('');
+  const [buttonColor, setButtonColor] =useState('#0047AB');
+  const [orderId, setOrderId] = useState();
   const orderOptions = [
     { value: "BUY", label: "BUY" },
     { value: "SELL", label: "SELL" },
@@ -36,6 +43,49 @@ const PlaceOrder = () => {
     accept: "application/json",
     "Content-Type": "application/json",
   };
+  const marketOrder=()=>{
+    const orderObj={
+      price:price,
+      quantity : quantity,
+      userId : user.value,
+      type: orderType.value,
+    }
+    try {
+      axios
+        .post("http://localhost:5000/transactions/market-order",orderObj, {
+          headers: headers,
+        })
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  const matchOrder=()=>{
+    const matchObj = {
+      type : orderType.value,
+      orderId : orderId
+    }
+    console.log(matchObj);
+    try {
+      axios
+        .post("http://localhost:5000/transactions/match-order",matchObj, {
+          headers: headers,
+        })
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   const getMarketValue = () => {
     try {
@@ -44,8 +94,8 @@ const PlaceOrder = () => {
           headers: headers,
         })
         .then((response) => {
-          console.log(response);
           setPrice(response.data.currentPrice);
+          setCurrentPrice(response.data.currentPrice);
         })
         .catch((e) => {
           console.log(e);
@@ -61,7 +111,7 @@ const PlaceOrder = () => {
           headers: headers,
         })
         .then((response) => {
-          console.log(response);
+          // console.log(response);
           if (tempOptions.length === 0) {
             response.data.users.forEach((user) => {
               tempOptions.push({
@@ -82,9 +132,11 @@ const PlaceOrder = () => {
   const placeOrder = () => {
     const orderObj = {
       userId: user.value,
+      userName : user.label,
       type: orderType.value,
-      price: price,
-      quantity: qty,
+      price: parseInt(price),
+      quantity: parseInt(quantity),
+      status : "ACTIVE"
     };
     console.log(orderObj);
     try {
@@ -93,7 +145,9 @@ const PlaceOrder = () => {
           headers: headers,
         })
         .then((response) => {
-          console.log(response);
+          // console.log(response);
+          setOrderId(response.data.orderId);
+          // redirect();
         })
         .catch((e) => {
           console.log(e);
@@ -108,8 +162,27 @@ const PlaceOrder = () => {
     getMarketValue();
   }, []);
 
+  useEffect(()=>{
+    matchOrder();
+  },[orderId]);
+
+  useEffect(()=>{
+    if(priceType.value === "MARKET"){
+      setPrice(-1);
+    }
+  },[priceType])
+
+  useEffect(()=>{
+    if(orderType.value==="BUY") {
+      setButtonColor("green");
+    }
+    if(orderType.value==="SELL") {
+      setButtonColor("red");
+    }
+
+  },[orderType.value])
   return (
-    <Box sx={{ backgroundColor: "#000", padding: "7px" }}>
+    <Box sx={{ backgroundColor: "#000", padding: "7px", height: '100vh' }}>
       <Navbar title="Place order" />
       <Box display="flex" justifyContent="center" alignItems="center">
         <Box
@@ -170,8 +243,8 @@ const PlaceOrder = () => {
                   size="small"
                   type="number"
                   placeholder="Quantity"
-                  value={qty}
-                  onChange={(event) => setQty(event.target.value)}
+                  value={quantity}
+                  onChange={(event) => setquantity(event.target.value)}
                 />
               </div>
               <div>
@@ -179,6 +252,7 @@ const PlaceOrder = () => {
                   sx={{ m: 1, minWidth: 400, maxWidth: 400 , background: "white", p:1 }}
                   size="small"
                   type="number"
+                  disabled={priceType.value === "MARKET"?true:false}
                   placeholder="Price"
                   value={price}
                   onChange={(event) => setPrice(event.target.value)}
@@ -187,7 +261,7 @@ const PlaceOrder = () => {
             </Box>
             <Box>
               <Button
-                sx={{m: 1, minWidth: 400, maxWidth: 400 , background: "orange", p:1 }}
+                sx={{m: 1, minWidth: 400, maxWidth: 400 , background: buttonColor, p:1 }}
                 onClick={placeOrder}
                 variant="contained"
               >

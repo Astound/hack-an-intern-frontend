@@ -14,27 +14,25 @@ const Navbar = (props) => {
   };
   return (
     <Box sx={{ flexGrow: 1, marginBottom: "20px" }}>
-      <AppBar position="static">
+      <AppBar position="static" style={{ background: '#D4F1F4' , color: 'black'  }}>
         <Toolbar>
-          <IconButton
+          {/* <IconButton
             size="large"
             edge="start"
             color="inherit"
             aria-label="menu" 
-            onClick={redirect}
+            onClick={redirect} 
           >
             <KeyboardDoubleArrowLeftIcon />
-          </IconButton>
-          <Typography variant="h6" sx={{textTransform: "uppercase"}}>{props.title}</Typography>
-          <Button sx={{ mx: 3}}  >
-            <Link style={{ textDecoration: 'none' ,color : 'white' }} to="/order-book"> Order Book</Link>
-          </Button>
-          <Button sx={{ mx: 3}}>
-            <Link style={{ textDecoration: 'none' ,color : 'white' }} to="/transaction-history"> Transaction History</Link>
-          </Button>
-          <Button sx={{ mx: 3}}  >
-            <Link style={{ textDecoration: 'none' ,color : 'white' }}  to="/place-order"> Place Order</Link>
-          </Button>
+          </IconButton> */}
+          
+          {/* <Typography variant="h6" sx={{textTransform: "uppercase", mr : '450px'}}>DENSITY</Typography> */}
+          <Typography variant="h6" sx={{textTransform: "uppercase", mr : '450px'}}>{props.title}</Typography>
+            <Link style={{ textDecoration: 'none' , color: 'black',marginLeft : '50px'  }}  to="/"> <Typography>Dashboard</Typography></Link>
+            <Link style={{ textDecoration: 'none' , color: 'black',marginLeft : '50px'  }} to="/order-book"> <Typography>Order Book</Typography></Link>
+            <Link style={{ textDecoration: 'none' , color: 'black',marginLeft : '50px'  }} to="/transaction-history"> <Typography>Transaction History</Typography></Link>
+            <Link style={{ textDecoration: 'none' , color: 'black',marginLeft : '50px'  }}  to="/place-order"> <Typography>Place Order</Typography></Link>
+            <Link style={{ textDecoration: 'none' , color: 'black',marginLeft : '50px'  }}  to="/events"> <Typography>Event log</Typography></Link>
         </Toolbar>
       </AppBar>
     </Box>

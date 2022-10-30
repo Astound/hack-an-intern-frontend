@@ -17,8 +17,8 @@ import Navbar from "./Navbar";
 import LineGraph from "./LineGraph";
 import MarketPriceDisplay from "./MarketPriceDisplay";
 
-function createData(user, qty, price, status) {
-  return { user, qty, price, status };
+function createData(orderId,userId,userName, quantity, price, status) {
+  return { orderId,userId,userName, quantity, price, status };
 }
 
 const OrderBook = () => {
@@ -40,27 +40,29 @@ const OrderBook = () => {
           response.data.buyOrders.forEach((order) => {
             tempRowBuyer.push(
               createData(
+                order.orderId,
                 order.userId,
+                order.userName,
                 order.quantity,
                 order.price,
                 order.status
               )
             );
           });
-          console.log(tempRowBuyer);
           setRowsBuyer(tempRowBuyer);
           let tempRowSeller = [];
           response.data.sellOrders.forEach((order) => {
             tempRowSeller.push(
               createData(
+                order.orderId,
                 order.userId,
+                order.userName,
                 order.quantity,
                 order.price,
                 order.status
               )
             );
           });
-          console.log(tempRowSeller);
           setRowsSeller(tempRowSeller);
         })
         .catch((e) => {
@@ -76,112 +78,121 @@ const OrderBook = () => {
   }, []);
 
   return (
-    <Box sx={{ backgroundColor: "#000", padding: "7px" }}>
-      <Navbar title={"Order Book"} />
-      <Box display="flex" justifyContent="center" alignItems="center">
-        <Grid
+    <Box sx={{ backgroundColor: "#000", padding: "7px" , height: '100vh' }}>
+      <Navbar title={"Order Book"} /> 
+      <Box 
+        container
+        display="flex"  
+        marginBottom=" 20px"
+        marginTop=" 20px"
+      > 
+        <TableContainer
           sx={{
-            height: "100vh",
-            width: "100%",
+            maxWidth: 400,
+            minHeight: 420,
+            border: "3px solid white",
+            backgroundColor: "#000",
+            m: 2,
           }}
-          container
-          display="flex"
-          direction="row"
-          spacing={3}
-          justifyContent="center"
-          alignItems="center "
+          component={Box}
         >
-          <Grid item>
-            <Typography variant="h5">Buy Orders</Typography>
-            <TableContainer
-              sx={{
-                maxWidth: 650,
-                border: "3px solid white",
-                backgroundColor: "#000",
-              }}
-              component={Box}
-            >
-              <Table sx={{ maxWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>
-                      <Typography color="white">User</Typography>{" "}
-                    </TableCell>
-                    <TableCell align="right">
-                      <Typography color="white">Qty.</Typography>
-                    </TableCell>
-                    <TableCell align="right">
-                      <Typography color="white">Price</Typography>
-                    </TableCell>
-                    <TableCell align="right">
-                      <Typography color="white">Status</Typography>
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rowsBuyer.map((row) => (
-                    <TableRow
-                      key={row.user}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        <Typography color="white">{row.user}</Typography>
-                      </TableCell>
-                      <TableCell align="right"><Typography color="white">{row.qty}</Typography></TableCell>
-                      <TableCell align="right"><Typography color="white">{row.price}</Typography></TableCell>
-                      <TableCell align="right"><Typography color="white">{row.status}</Typography></TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Grid>
-          <Grid item>
-            <Typography variant="h5">Sell Orders</Typography>
-            <TableContainer
-              sx={{
-                maxWidth: 650,
-                border: "3px solid white",
-                backgroundColor: "#000",
-              }}
-              component={Box}
-            >
-              <Table sx={{ maxWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>
-                      <Typography color="white">User</Typography>{" "}
-                    </TableCell>
-                    <TableCell align="right">
-                      <Typography color="white">Qty.</Typography>
-                    </TableCell>
-                    <TableCell align="right">
-                      <Typography color="white">Price</Typography>
-                    </TableCell>
-                    <TableCell align="right">
-                      <Typography color="white">Status</Typography>
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rowsSeller.map((row) => (
-                    <TableRow
-                      key={row.user}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        {row.user}
-                      </TableCell>
-                      <TableCell align="right">{row.qty}</TableCell>
-                      <TableCell align="right">{row.price}</TableCell>
-                      <TableCell align="right">{row.status}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Grid>
-        </Grid>
+            <Typography variant="h5" color="white" backgroundColor="green" margin={'6px'} textAlign="center">Buy Orders</Typography>
+          <Table sx={{ maxWidth: 400   }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  <Typography color="white">User</Typography>{" "}
+                </TableCell>
+                <TableCell align="right">
+                <Typography color="white">Quantity</Typography>
+                </TableCell>
+                <TableCell align="right">
+                  <Typography color="white">Price</Typography>
+                </TableCell>
+                <TableCell align="right">
+                  <Typography color="white">Status</Typography>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rowsBuyer.map((row) => (
+                <TableRow
+                  key={row.orderId}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                  <Typography color="white">{row.userName}</Typography>
+                  </TableCell>
+                  <TableCell align="right"><Typography color="white">{row.quantity}</Typography></TableCell>
+                  <TableCell align="right"><Typography color="white">{row.price}</Typography></TableCell>     
+                  <TableCell align="right"><Typography color={row.status==="ACTIVE"? "green" : "gray"} fontWeight='bold'>{row.status}</Typography></TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+
+       
+        <TableContainer
+          sx={{
+            maxWidth: 400,
+            minHeight: 420,
+            border: "3px solid white",
+            backgroundColor: "#000",
+            m: 2,
+          }}
+          component={Box}
+        >
+            <Typography  variant="h5" color="white" backgroundColor="red" margin={'6px'} textAlign="center">Sell Orders</Typography>
+          <Table sx={{ maxWidth: 400    }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  <Typography color="white">User</Typography>{" "}
+                </TableCell>
+                <TableCell align="right">
+                  <Typography color="white">Qty.</Typography>
+                </TableCell>
+                <TableCell align="right">
+                  <Typography color="white">Price</Typography>
+                </TableCell>
+                <TableCell align="right">
+                  <Typography color="white">Status</Typography>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rowsSeller.map((row) => (
+                <TableRow
+                key={row.userId}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                <Typography color="white">
+                  {row.userName}
+                </Typography>
+                  
+                </TableCell>
+                <TableCell align="right">
+                  <Typography color="white">
+                    {row.quantity}
+                  </Typography>
+                  </TableCell>
+                <TableCell align="right">
+                  <Typography color="white">
+                    {row.price}
+                  </Typography>
+                  </TableCell>
+                <TableCell align="right">
+                  <Typography color={row.status==="ACTIVE"? "green" : "gray"} fontWeight='bold'>
+                    {row.status}
+                  </Typography>
+                  </TableCell>
+              </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
         <LineGraph />
       </Box>
       <MarketPriceDisplay />
